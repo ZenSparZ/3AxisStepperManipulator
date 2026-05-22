@@ -2,88 +2,35 @@
 #include "SysTick.h"
 #include "system.h"
 #include "usart.h"
-#include "pump.h"
-#include "motor.h"
-#include "dj.h"
 #include "step.h"
 extern float t1,t2,t3;
 extern int Flag;
 int main()
 {   
   int state=1;
-	SysTick_Init(72);//ÏµÍ³Ê±ÖÓ
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//ÇÀÕ¼ÓÅÏÈ¼¶
-	USART1_Init(115200);///´®¿Ú
-	USART2_Init(115200);///´®¿Ú
-	step_control_Init();//ÏŞÎ»Æ÷
-	step_GPIO_Init();//²½½ødir
-	TIM3_Step_Init(999,72-1);//²½½ø¶¨Ê±Æ÷
-   motor_Init();//µ¶Æ¬Ö±Á÷
-	duoji_Init();//¼ôµ¶
-	pump_Init();//Æø±Ã³õÊ¼»¯
+	SysTick_Init(72);//ç³»ç»Ÿæ—¶é’Ÿ
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//æŠ¢å ä¼˜å…ˆçº§
+	USART1_Init(115200);///ä¸²å£
+	USART2_Init(115200);///ä¸²å£
+	step_control_Init();//é™ä½å™¨
+	step_GPIO_Init();//æ­¥è¿›dir
+	TIM3_Step_Init(999,72-1);//æ­¥è¿›å®šæ—¶å™¨
 	Move_to_start();
-  //USART1_on(); 
-	pump1=1;pump2=1;
-//						Move_to(90,85,60);
-//						Move_to(160,60,80);
-//	cut_move(8000,0);
-//	cut_move(2000,1);
+
+	Move_to(90,85,60);
+	Move_to(160,60,80);
  while (1)
   { 
-		
-		
-		switch(state)
-		{ 
-			case 1:
-			{
-			  motor=1;
-				cut_move(8000,0);
-				motor=0;
-				state=2;
-				break;
-			}
-			case 2://È¥»Æ£»
-			    {
-			     //USART1_on(); 
-//          if(Flag==1) state=2;
-//          else 
-//					{  
-						scissors1=1;
-						Move_to(90,45,150);
+	  USART1_on(); 
+      	
+				Move_to(t1,45,150);
 		        
-						Move_to(160,60,100);
+				Move_to(160,t2,t3);
 			       t1=0,t2=0,t3=0;
-					  
 						
-					   delay_ms(1000);delay_ms(1000);delay_ms(1000);
-						
-             scissors1=0;
-					   state=3;
-						//}
-					 break;
-		      }
-			case 3://»úĞµ±Û¹éÎ»
-			   {
+       
 			     Move_to_start();
-					 state=4;
-					 break;
-			   }
-			case 4:
-			{
-				cut_move(2200,1);
-				state=5;
-				break;
-			}
-			case 5:
-			{
-			cut_move(6000,0);
-      state=6;
-			break;
-			}
-			default :
-			state=1;
-			break;
-			}	
+			
 
   }
 }
